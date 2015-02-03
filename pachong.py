@@ -5,6 +5,7 @@ import pymongo
 import time
 from bs4 import BeautifulSoup
 
+
 class MongoStruct:
 	conn = None
 	mydb = None
@@ -13,8 +14,9 @@ class MongoStruct:
 		self.conn = pymongo.Connection('192.168.2.5',27017)
 		self.mydb = self.conn.neihanba
 		self.mytable = self.mydb.text
-	def insert(self, data):
+	def insert(self, data, insertnum):
 		if self.mytable.find({"id":data["id"]}).count() == 0:
+			insertnum += 1
 			self.mytable.insert(data)
 
 
@@ -48,16 +50,17 @@ def work(url, ansarr) :
 def main():
 	mongo = MongoStruct()
 	mongo.init()
+	insertnum = 0
 	allindex = 0
-	index = 201
+	index = 20
 	while index > 1 :
 		index -= 1
 		ansarr = []
 		url = "http://m.neihan8.com/article/list_5_"+str(index)+".html"
-		print "start @ [%s] index[%d]"%(url, allindex)
+		print "start @ [%s] index[%d] insert[%d]"%(url, allindex, insertnum)
 		work(url,ansarr)
 		for item in ansarr :
-			mongo.insert(item)
+			mongo.insert(item, insertnum)
 			allindex += 1
 		#	print "id[%s] \ntitle [%s] \ndata[%s]"%(item["id"],item["title"].encode('utf-8'), item["data"].encode('utf8'))
 
