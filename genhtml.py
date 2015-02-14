@@ -10,7 +10,7 @@ class MongoStruct:
 		self.mydb = self.conn.neihanba
 		self.mytable = self.mydb.text
 	def select(self, data):
-		cursor = self.mytable.find().sort("time",pymongo.DESCENDING)
+		cursor = self.mytable.find({"status":1}).sort("time",pymongo.DESCENDING)
 		index = 0
 		while index < cursor.count() :
 			data.append(cursor.next())

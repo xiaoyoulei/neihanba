@@ -33,13 +33,14 @@ def work(url, ansarr) :
 	while index < len(titles)-1:
 		index += 1
 		item = {}
+		item["status"] = 1
 		item["title"] = titles[index].text.strip()
 		item["id"] = hashlib.md5(item["title"].encode('utf-8')).hexdigest()
 		if datas[index].img != None:
 			continue
 		datatmp = datas[index].getText(separator="||").split("||")
-		if len(datatmp) >= 5 :
-			item["data"] = ''.join(datatmp[5:-1])
+		if len(datatmp) > 4 :
+			item["data"] = ''.join(datatmp[4:])
 		else :
 			continue
 		if len(item["title"]) == 0 or len(item["data"]) == 0:
@@ -52,7 +53,7 @@ def main():
 	mongo.init()
 	insertnum = 0
 	allindex = 0
-	index = 20
+	index = 5
 	while index > 1 :
 		index -= 1
 		ansarr = []
